@@ -1,24 +1,34 @@
 import requests
 import random
-def name_printing(name):
-    name_index = 0
-    for letter in name:
-        letter[name_index]
-    name_index+=1
-    return " ". join(letter)
+
 pokemon = random.randint(1,20)
 url = f"https://pokeapi.co/api/v2/pokemon/{pokemon}"
 response = requests.get(url)
 data = response.json()
 
-poke_name = data["name"]
+poke_name = data["name"].lower()
 poke_h = data["height"]
 poke_w = data["weight"]
-split_name = name_printing(poke_name)
-revealed_name = 1
-while revealed_name <= len(poke_name):
-    print(f"Pokemon Name: {split_name}")
-    print(f"Pokemon Height: {poke_h}")
+
+reveled_char = 1
+guessed_correctly = False
+
+while reveled_char <= len(poke_name):
+    hint_name = poke_name[:reveled_char]
+    print(hint_name)
     print(f"Pokemon Weight: {poke_w}")
-    guess = input("Who's that Pokemon?")
+    print(f"Pokemon Height: {poke_h}")
+    
+    guess_input = input("Your Guess: ").lower()
+    
+    if guess_input == poke_name:
+        print(f"You've Guessed the Pokemon! it was: {poke_name}")
+        guessed_correctly = True
+        break
+    else:
+        print("Wrong Guess!")
+        reveled_char += 1
+
+if not guessed_correctly:
+    print(f"Out OF Guesses! Pokemon was: {poke_name}")
  
